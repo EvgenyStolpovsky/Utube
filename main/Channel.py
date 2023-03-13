@@ -34,9 +34,42 @@ class Channel():
             channel = json.dumps(channel_dict, indent=2, ensure_ascii=False)
             file.write(channel)
 
+    def __str__(self):
+        """Название ютуб-канала"""
+        return f'Youtube-канал:{self.name}'
+
+
+    def __lt__(self, other):
+        """метод сравнения каналов на количество подписчиков ">" """
+        return self.subscriber_count > other.self.video_count
+
+    def __gt__(self, other):
+        """метод сравнения каналов на количество подписчиков "<" """
+        return self.subscriber_count < other.self.video_count
+
+    def __add__(self, other):
+        """метод сложения 2 канала на количество подписчиков "+" """
+        return int(self.subscriber_count) + int(other.self.video_count)
 
 id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
 id2 = 'UC1eFXmJNkjITxPFWTy6RsWg'
 
 ch1 = Channel(id1)
 ch2 = Channel(id2)
+
+
+print(id1)
+# Youtube-канал: вДудь
+
+print(ch2)
+# Youtube-канал: Редакция
+
+#print(ch1 > ch2)
+# True
+
+#print(ch1 < ch2)
+# False
+
+print(ch1 + ch2)
+# 13940000
+
