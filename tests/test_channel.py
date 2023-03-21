@@ -1,4 +1,5 @@
-from main.Channel import Channel, Video, PLVideo
+import pytest
+from main.Channel import Channel, Video, PLVideo, Playlist
 
 def test__init__():
     id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
@@ -7,29 +8,44 @@ def test__init__():
     assert id2 == 'UC1eFXmJNkjITxPFWTy6RsWg'
 
 def test__str__():
+    """Тест на проверку ID канала"""
     id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
     id2 = 'UC1eFXmJNkjITxPFWTy6RsWg'
     assert id1.__str__() == 'UCMCgOm8GZkHp8zJ6l7_hIuA'
     assert id2.__str__() == 'UC1eFXmJNkjITxPFWTy6RsWg'
 
 def test__lt__():
-    id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
-    id2 = 'UC1eFXmJNkjITxPFWTy6RsWg'
+    """сравнение каналов ">" на количество подписчиков"""
+    ch1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
+    ch2 = Channel('UC1eFXmJNkjITxPFWTy6RsWg')
     assert ch1.__lt__(ch2) is False
 
 def test__gt__():
-    id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
-    id2 = 'UC1eFXmJNkjITxPFWTy6RsWg'
-    assert ch1.__lt__(ch2) is True
+    """сравнение каналов "<" на количество подписчиков"""
+    ch1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
+    ch2 = Channel('UC1eFXmJNkjITxPFWTy6RsWg')
+    assert ch1.__gt__(ch2) is True
 
 def test__add__():
-    id1 = 'UCMCgOm8GZkHp8zJ6l7_hIuA'
-    id2 = 'UC1eFXmJNkjITxPFWTy6RsWg'
-    assert ch1.__add__(ch2) == 14_000_000
+    """Общее количество подписчиков """
+    ch1 = Channel('UCMCgOm8GZkHp8zJ6l7_hIuA')
+    ch2 = Channel('UC1eFXmJNkjITxPFWTy6RsWg')
+    assert ch1.__add__(ch2) == 14000000
 
-class TestVideo(unittest.TestCase):
-    def test__str__(self):
-        video1 = Video('9lO06Zxhu88')
-        video2 = PLVideo('BBotskuyw_M', 'PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
-        assert video1.__str__() == 'Как устроена IT-столица мира / Russian Silicon Valley (English subs)'
-        assert video2.__str__() == 'Пушкин: наше все?'
+def test__str__():
+    video1 = Video('9lO06Zxhu88')
+    video2 = PLVideo('BBotskuyw_M', 'PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
+    assert video1.__str__() == 'Как устроена IT-столица мира / Russian Silicon Valley (English subs)'
+    assert video2.__str__() == 'Пушкин: наше все?'
+
+def test_Playlist():
+    pl = Playlist('PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
+    assert pl.url == 'https://www.youtube.com/playlist?list=PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD'
+    assert pl.show_best_video() == 'https://youtu.be/1ot9xIG9lKc'
+
+def test_Video():
+    video1 = Video('9lO06Zxhu88')
+    video2 = PLVideo('BBotskuyw_M', 'PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
+    broken_video = Video('D5SKbtnK54')
+    assert broken_video.title == None
+    assert broken_video.id == 'D5SKbtnK54'
